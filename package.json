@@ -1,0 +1,24 @@
+{
+  "name": "cs4550project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sangeetadhingra/CS4550Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sangeetadhingra/CS4550Project/issues"
+  },
+  "homepage": "https://github.com/sangeetadhingra/CS4550Project#readme",
+  "dependencies": {
+    "bootstrap": "^5.1.3",
+    "font-awesome": "^4.7.0",
+    "react": "^18.0.0"
+  }
+}
