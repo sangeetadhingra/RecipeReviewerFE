@@ -1,4 +1,5 @@
 import SearchRecipes from "./screens/search-recipes";
+import RecipeDetails from "./screens/recipe-details"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
         <Routes>
           <Route path="/">
             <Route index element={<SearchRecipes />} />
+            <Route path="details/:recipeID" element={<RecipeDetails/>}/>
           </Route>
         </Routes>
       </div>

@@ -1,4 +1,5 @@
 import { useState, React, useRef } from "react";
+import { Link } from "react-router-dom";
 import Axios from "axios";
 import Preview from "../utils/preview"
 
@@ -20,8 +21,10 @@ const SearchRecipes = () => {
         {
           recipes.map(recipe => 
             <li className="list-group-item">
-              <img className="me-4" src={recipe.recipe.image} height={120}/>
-              {recipe.recipe.label}
+              <Link to={`/details/${recipe.recipe.uri.substring(44)}`}>
+                <img className="me-4" src={recipe.recipe.image} height={120}/>
+                {recipe.recipe.label}
+              </Link>
             </li>)
         }
         </ul>
