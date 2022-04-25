@@ -8,7 +8,8 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/">
-            <Route index element={<SearchRecipes />} />
+            <Route path="/search" element={<SearchRecipes />} />
+            <Route path="/search/:searchString" element={<SearchRecipes />} />
             <Route path="details/:recipeID" element={<RecipeDetails/>}/>
           </Route>
         </Routes>
