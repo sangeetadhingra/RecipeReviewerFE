@@ -7,22 +7,31 @@ const RecipeDetails = () => {
   const API_URL =
     "https://api.edamam.com/api/recipes/v2/{$}?type=public&app_id=67754742&app_key=93a49685d010e3cc69c2ee6b73df40ce";
   const [recipeDetails, setRecipeDetails] = useState({});
+  const [ourRecipeDetails, setOurRecipeDetails] = useState({});
   const { recipeID } = useParams();
   const RECIPE_URL = API_URL.replace("{$}", recipeID);
+  const API_BASE = process.env.REACT_APP_API_BASE
+    ? process.env.REACT_APP_API_BASE
+    : "http://localhost:4000/api";
   // TODO: Move to services
   const getRecipeByID = async () => {
     const response = await Axios.get(RECIPE_URL);
     setRecipeDetails(response.data.recipe);
   };
+  const getRecipeLikesByID = async () => {
+    const response = await Axios.get(API_BASE + "/recipes/" + recipeID);
+    console.log(response);
+    if (response) {
+      setOurRecipeDetails(response.data);
+    }
+  };
 
   useEffect(() => {
     getRecipeByID();
+    getRecipeLikesByID();
   });
 
   // TODO: Move to services
-  const API_BASE = process.env.REACT_APP_API_BASE
-    ? process.env.REACT_APP_API_BASE
-    : "http://localhost:4000/api";
   const handleLikes = async () => {
     // Construct the recipe
     // TODO: Add more?
@@ -66,6 +75,8 @@ const RecipeDetails = () => {
         <li> Meal Type: {recipeDetails.mealType}</li>
         <li> Dish Type: {recipeDetails.dishType}</li>
         <li> Calories: {recipeDetails.calories}</li>
+        <li> Likes: {ourRecipeDetails.likes}</li>
+        <li> Dislikes: {ourRecipeDetails.dislikes}</li>
       </ul>
       <br />
       <button
