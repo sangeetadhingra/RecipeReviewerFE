@@ -1,30 +1,26 @@
 import { useState, React, useRef, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Axios from "axios";
+import {searchRecipeAPIByName} from "../services/recipe-service";
 
 const SearchRecipes = () => {
   const [recipes, setRecipes] = useState([]);
   const recipeNameRef = useRef();
   const { searchString } = useParams();
   const navigate = useNavigate();
-  const RECIPE_URL = "https://api.edamam.com/api/recipes/v2?type=public&q=";
 
-  // TODO: Move to services
+
   const searchRecipeByName = async () => {
     const recipeName = recipeNameRef.current.value;
-    const response = await Axios.get(
-      RECIPE_URL +
-        recipeName +
-        "&app_id=67754742&app_key=93a49685d010e3cc69c2ee6b73df40ce"
-    );
-    setRecipes(response.data.hits);
+    const recipe = await searchRecipeAPIByName(recipeName);
+    console.log(recipe);
+    setRecipes(recipe.hits);
     navigate(`/search/${recipeNameRef.current.value}`);
   };
-  useEffect(() => {
-    if (searchString) {
-      recipeNameRef.current.value = searchString;
-      searchRecipeByName();
-    }
+  useEffect( () => {
+      if (searchString) {
+          recipeNameRef.current.value = searchString;
+          searchRecipeByName();
+      }
   });
   return (
     <div>

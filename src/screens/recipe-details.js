@@ -2,6 +2,7 @@ import { useState, React, useEffect } from "react";
 import Preview from "../utils/preview";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
+import {getRecipeAPIByID, getRecipeLikesAPIByID} from "../services/recipe-service";
 
 const RecipeDetails = () => {
   const API_URL =
@@ -13,16 +14,15 @@ const RecipeDetails = () => {
   const API_BASE = process.env.REACT_APP_API_BASE
     ? process.env.REACT_APP_API_BASE
     : "http://localhost:4000/api";
-  // TODO: Move to services
+
   const getRecipeByID = async () => {
-    const response = await Axios.get(RECIPE_URL);
-    setRecipeDetails(response.data.recipe);
+    const response = await getRecipeAPIByID(recipeID);
+    setRecipeDetails(response.recipe);
   };
   const getRecipeLikesByID = async () => {
-    const response = await Axios.get(API_BASE + "/recipes/" + recipeID);
-    console.log(response);
+    const response = await getRecipeLikesAPIByID(recipeID);
     if (response) {
-      setOurRecipeDetails(response.data);
+      setOurRecipeDetails(response);
     }
   };
 
@@ -39,7 +39,6 @@ const RecipeDetails = () => {
       title: recipeDetails.label,
       rid: recipeID,
     };
-    console.log(recipe);
     const response = await Axios.put(
       API_BASE + "/recipes/like/" + recipeID,
       recipe
@@ -81,13 +80,13 @@ const RecipeDetails = () => {
       <br />
       <button
         className="btn btn-primary btn-success mt-4 positive-relative rounded-pill"
-        onClick={handleLikes}
+        onClick={() => handleLikes}
       >
         Like
       </button>
       <button
         className="btn btn-primary btn-danger mt-4 position-relative rounded-pill"
-        onClick={handleDislikes}
+        onClick={() => handleDislikes}
       >
         Dislike
       </button>
