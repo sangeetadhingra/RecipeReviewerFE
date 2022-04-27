@@ -12,7 +12,6 @@ const SearchRecipes = () => {
   const searchRecipeByName = async () => {
     const recipeName = recipeNameRef.current.value;
     const recipe = await searchRecipeAPIByName(recipeName);
-    console.log(recipe);
     setRecipes(recipe.hits);
     navigate(`/search/${recipeNameRef.current.value}`);
   };
@@ -21,7 +20,7 @@ const SearchRecipes = () => {
           recipeNameRef.current.value = searchString;
           searchRecipeByName();
       }
-  });
+  },[]);
   return (
     <div>
       <h1>Search Recipes!</h1>

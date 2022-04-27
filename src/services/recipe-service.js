@@ -18,15 +18,17 @@ export const searchRecipeAPIByName = async (recipeName) => {
 const API_URL =
     "https://api.edamam.com/api/recipes/v2/{$}?type=public&app_id=67754742&app_key=93a49685d010e3cc69c2ee6b73df40ce";
 export const getRecipeAPIByID = async (recipeID) => {
-    const RECIPE_URL = API_URL.replace("{$}", recipeID);
+    console.log(recipeID);
     const response = await Axios.get(
-        API_BASE + "/" + recipeID
+        API_BASE + "/recipeID/" + recipeID
     );
+
     return response.data;
 };
 
 export const getRecipeLikesAPIByID = async (recipeID) => {
     const response = await Axios.get(API_BASE + "/recipeAPI/" + recipeID);
+    console.log(response.data);
     return response.data;
 
 };
