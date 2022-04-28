@@ -1,14 +1,15 @@
-import { useState, React, useEffect } from "react";
+import {useState, React, useEffect, useRef} from "react";
 import Preview from "../utils/preview";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
-import {getRecipeAPIByID, getRecipeLikesAPIByID} from "../services/recipe-service";
+import {findCommentsByRecipeID, getRecipeAPIByID, getRecipeLikesAPIByID, postComment} from "../services/recipe-service";
 import SecureContent from "../components/secure-content";
 import {useProfile} from "../context/profile-context";
 
 Axios.defaults.withCredentials = true;
 const RecipeDetails = () => {
-  const [recipeDetails, setRecipeDetails] = useState({});
+  const [recipeDetails, setRecipeDetails] = useState([]);
+  const [comments, setComments] = useState([])
 
   const {profile} = useProfile();
 
@@ -30,9 +31,16 @@ const RecipeDetails = () => {
     }
   };
 
+  const findRecipeComments = async () => {
+        const allComments = await findCommentsByRecipeID(recipeID);
+        console.log(allComments);
+        setComments(allComments);
+  }
+
   useEffect(() => {
     getRecipeByID();
     getRecipeLikesByID();
+    findRecipeComments();
   }, []);
 
   // TODO: Move to services
@@ -63,7 +71,18 @@ const RecipeDetails = () => {
       setOurRecipeDetails(response.data);
   };
 
-  // TODO: Upload recipe to db when liking, add uuid or take hash as RID
+  const commentRef = useRef();
+
+  const handleComment = async() => {
+      const newComment = await postComment(recipeID, profile._id,
+          {comment: commentRef.current.value,
+              user: profile._id,
+              name: profile.firstName
+          });
+
+      setComments([...comments, newComment]);
+  }
+
   return (
     <div>
       <h1>{recipeDetails.label}</h1>
@@ -111,11 +130,22 @@ const RecipeDetails = () => {
       </div>
         {<SecureContent> <div>
             <h3 className="mt-5">Leave a comment:</h3>
-            <textarea className="form-control w-50" />
-            <button className="btn btn-primary mt-1">Post</button>
-            <ul className="list-group">TODO: Grab comments from database</ul>
-            <Preview json={recipeDetails} /> </div> </SecureContent>
+            <textarea ref={commentRef} className="form-control w-50" />
+            <button onClick={handleComment} className="btn btn-primary mt-1">Post</button>
+
+           </div> </SecureContent>
         }
+        <br/>
+        <div>
+        <ul className="list-group">
+            <h5> Reviews: </h5>
+            {comments && comments.map((everyComment) => (
+                <li className="list-group-item">
+                    {everyComment && everyComment.name} : {everyComment && everyComment.comment}</li>
+            ))}
+
+
+        </ul> </div>
     </div>
   );
 };
