@@ -1,6 +1,7 @@
 import React, {useRef} from "react";
 import Axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {useProfile} from "../context/profile-context";
 
 
 Axios.defaults.withCredentials = true;
@@ -9,16 +10,17 @@ const SignUp = () => {
     const passwordRef = useRef();
     const firstNameRef = useRef();
     const lastNameRef = useRef();
+    const {signup} = useProfile();
     const navigate = useNavigate();
     const handleSignUp = async() => {
         try {
             //move to user service
-            await Axios.post("http://localhost:4000/api/signup", {
-                email:emailRef.current.value,
-                password: passwordRef.current.value,
-                firstName: firstNameRef.current.value,
-                lastName: lastNameRef.current.value
-            } )
+            await signup(
+                emailRef.current.value,
+                passwordRef.current.value,
+                firstNameRef.current.value,
+                lastNameRef.current.value
+            )
             navigate('/signin')
         }
         catch (e) {

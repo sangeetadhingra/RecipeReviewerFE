@@ -3,20 +3,15 @@ import Preview from "../utils/preview";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
 import {getRecipeAPIByID, getRecipeLikesAPIByID} from "../services/recipe-service";
-
+import SecureContent from "../components/secure-content";
+import {useProfile} from "../context/profile-context";
 
 Axios.defaults.withCredentials = true;
 const RecipeDetails = () => {
   const [recipeDetails, setRecipeDetails] = useState({});
-  const [currentUser, setCurrentUser] = useState(null);
-    const getCurrentUser = async() => {
-        try {
-            const userResponse = await Axios.post("http://localhost:4000/api/profile");
-            setCurrentUser(userResponse.data)
-        }
-        catch (e) {
-        }
-    }
+
+  const {profile} = useProfile();
+
   const [ourRecipeDetails, setOurRecipeDetails] = useState({});
   const { recipeID } = useParams();
   const API_BASE = process.env.REACT_APP_API_BASE
@@ -38,7 +33,6 @@ const RecipeDetails = () => {
   useEffect(() => {
     getRecipeByID();
     getRecipeLikesByID();
-    getCurrentUser();
   }, []);
 
   // TODO: Move to services
@@ -89,7 +83,7 @@ const RecipeDetails = () => {
         <li> Dislikes: {ourRecipeDetails && ourRecipeDetails.dislikes}</li>
       </ul>
       <br />
-        {currentUser && <div>
+      <SecureContent><div>
       <button
         className="btn btn-primary btn-success mt-4 positive-relative rounded-pill"
         onClick={handleLikes}
@@ -101,7 +95,7 @@ const RecipeDetails = () => {
         onClick={handleDislikes}
       >
         Dislike
-      </button> </div>}
+      </button> </div></SecureContent>
       <br />
       <br />
       <h3 className="mt-3">
@@ -115,12 +109,12 @@ const RecipeDetails = () => {
             ))}
         </ul>
       </div>
-        {currentUser && <div>
+        {<SecureContent> <div>
             <h3 className="mt-5">Leave a comment:</h3>
             <textarea className="form-control w-50" />
             <button className="btn btn-primary mt-1">Post</button>
             <ul className="list-group">TODO: Grab comments from database</ul>
-            <Preview json={recipeDetails} /> </div>
+            <Preview json={recipeDetails} /> </div> </SecureContent>
         }
     </div>
   );
