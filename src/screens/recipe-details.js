@@ -2,15 +2,18 @@ import { useState, React, useEffect } from "react";
 import Preview from "../utils/preview";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
-import {getRecipeAPIByID, getRecipeLikesAPIByID} from "../services/recipe-service";
+import {
+  getRecipeAPIByID,
+  getRecipeLikesAPIByID,
+} from "../services/recipe-service";
 import SecureContent from "../components/secure-content";
-import {useProfile} from "../context/profile-context";
+import { useProfile } from "../context/profile-context";
 
 Axios.defaults.withCredentials = true;
 const RecipeDetails = () => {
   const [recipeDetails, setRecipeDetails] = useState({});
 
-  const {profile} = useProfile();
+  const { profile } = useProfile();
 
   const [ourRecipeDetails, setOurRecipeDetails] = useState({});
   const { recipeID } = useParams();
@@ -60,7 +63,7 @@ const RecipeDetails = () => {
       API_BASE + "/recipes/dislike/" + recipeID,
       recipe
     );
-      setOurRecipeDetails(response.data);
+    setOurRecipeDetails(response.data);
   };
 
   // TODO: Upload recipe to db when liking, add uuid or take hash as RID
@@ -83,19 +86,22 @@ const RecipeDetails = () => {
         <li> Dislikes: {ourRecipeDetails && ourRecipeDetails.dislikes}</li>
       </ul>
       <br />
-      <SecureContent><div>
-      <button
-        className="btn btn-primary btn-success mt-4 positive-relative rounded-pill"
-        onClick={handleLikes}
-      >
-        Like
-      </button>
-      <button
-        className="btn btn-primary btn-danger mt-4 position-relative rounded-pill"
-        onClick={handleDislikes}
-      >
-        Dislike
-      </button> </div></SecureContent>
+      <SecureContent>
+        <div>
+          <button
+            className="btn btn-primary btn-success mt-4 positive-relative rounded-pill"
+            onClick={handleLikes}
+          >
+            Like
+          </button>
+          <button
+            className="btn btn-primary btn-danger mt-4 position-relative rounded-pill"
+            onClick={handleDislikes}
+          >
+            Dislike
+          </button>{" "}
+        </div>
+      </SecureContent>
       <br />
       <br />
       <h3 className="mt-3">
@@ -109,13 +115,18 @@ const RecipeDetails = () => {
             ))}
         </ul>
       </div>
-        {<SecureContent> <div>
+      {
+        <SecureContent>
+          {" "}
+          <div>
             <h3 className="mt-5">Leave a comment:</h3>
             <textarea className="form-control w-50" />
             <button className="btn btn-primary mt-1">Post</button>
             <ul className="list-group">TODO: Grab comments from database</ul>
-            <Preview json={recipeDetails} /> </div> </SecureContent>
-        }
+            <Preview json={recipeDetails} />{" "}
+          </div>{" "}
+        </SecureContent>
+      }
     </div>
   );
 };

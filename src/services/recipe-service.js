@@ -1,34 +1,40 @@
-
 import Axios from "axios";
 
-
-
 const API_BASE = process.env.REACT_APP_API_BASE
-    ? process.env.REACT_APP_API_BASE
-    : "http://localhost:4000/api/api";
+  ? process.env.REACT_APP_API_BASE
+  : "http://localhost:4000/api/api";
 
 export const searchRecipeAPIByName = async (recipeName) => {
-    const response = await Axios.get(
-        API_BASE + "/" + recipeName
-    );
-    return response.data;
-
-}
+  const response = await Axios.get(`${API_BASE}/${recipeName}`);
+  return response.data;
+};
 
 const API_URL =
-    "https://api.edamam.com/api/recipes/v2/{$}?type=public&app_id=67754742&app_key=93a49685d010e3cc69c2ee6b73df40ce";
+  "https://api.edamam.com/api/recipes/v2/{$}?type=public&app_id=67754742&app_key=93a49685d010e3cc69c2ee6b73df40ce";
 export const getRecipeAPIByID = async (recipeID) => {
-    console.log(recipeID);
-    const response = await Axios.get(
-        API_BASE + "/recipeID/" + recipeID
-    );
+  console.log(recipeID);
+  const response = await Axios.get(`${API_BASE}/recipeID/${recipeID}`);
 
-    return response.data;
+  return response.data;
 };
 
 export const getRecipeLikesAPIByID = async (recipeID) => {
-    const response = await Axios.get(API_BASE + "/recipeAPI/" + recipeID);
-    console.log(response.data);
-    return response.data;
+  const response = await Axios.get(`${API_BASE}/recipeAPI/${recipeID}`);
+  console.log(response.data);
+  return response.data;
+};
 
+export const updateRecipeLikes = async (recipeID, recipe) => {
+  return updateRecipeRating(recipeID, recipe, "like");
+};
+
+export const updateRecipeDislikes = async (recipeID, recipe) => {
+  return updateRecipeRating(recipeID, recipe, "dislike");
+};
+const updateRecipeRating = async (recipeID, recipe, rating) => {
+  const response = await Axios.put(
+    `${API_BASE}/recipes/${rating}/${recipeID}`,
+    recipe
+  );
+  return response.data;
 };

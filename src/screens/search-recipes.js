@@ -1,6 +1,6 @@
 import { useState, React, useRef, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import {searchRecipeAPIByName} from "../services/recipe-service";
+import { searchRecipeAPIByName } from "../services/recipe-service";
 
 const SearchRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -8,19 +8,18 @@ const SearchRecipes = () => {
   const { searchString } = useParams();
   const navigate = useNavigate();
 
-
   const searchRecipeByName = async () => {
     const recipeName = recipeNameRef.current.value;
     const recipe = await searchRecipeAPIByName(recipeName);
     setRecipes(recipe.hits);
     navigate(`/search/${recipeNameRef.current.value}`);
   };
-  useEffect( () => {
-      if (searchString) {
-          recipeNameRef.current.value = searchString;
-          searchRecipeByName();
-      }
-  },[]);
+  useEffect(() => {
+    if (searchString) {
+      recipeNameRef.current.value = searchString;
+      searchRecipeByName();
+    }
+  }, []);
   return (
     <div>
       <h1>Search Recipes!</h1>
