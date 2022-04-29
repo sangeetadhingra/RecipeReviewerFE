@@ -28,7 +28,7 @@ const SignUp = () => {
     }
   };
   return (
-    <div>
+    <div className="wd-fade-in">
       <h1 className="text-warning mb-5">Tell us a little about yourself!</h1>
       <div className="mb-3 row">
         <label for="staticEmail" className="col-sm-2 col-form-label">

@@ -9,9 +9,12 @@ const NavBar = () => {
   const renderSignout = () => {
     return (
       <button
-        onClick={() => {
-          signout();
-          navigate("/home");
+        onClick={async () => {
+          try {
+            await signout();
+          } catch (e) {}
+          navigate("/signin");
+          window.location.reload();
         }}
         className="btn btn-outline-danger rounded-pill"
       >

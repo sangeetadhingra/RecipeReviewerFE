@@ -14,7 +14,7 @@ const Profile = () => {
     const allComments = await findCommentsByUserID(profile._id);
     setComments(allComments);
   };
-  const logoutBTN = async () => {
+  const handleLogout = async () => {
     try {
       await signout();
     } catch (e) {}
@@ -29,7 +29,7 @@ const Profile = () => {
       <h3 className="text-warning"> Welcome {profile && profile.firstName}!</h3>
       <hr />
       <h5>Permissions: {profile && profile.role} </h5>
-      <button onClick={logoutBTN} className="btn btn-danger">
+      <button onClick={handleLogout} className="btn btn-danger">
         Logout
       </button>
       <hr />

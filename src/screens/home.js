@@ -6,29 +6,29 @@ import { searchRecipeAPIByName } from "../services/recipe-service";
 import RecipesViewer from "../utils/recipes-viewer";
 
 Axios.defaults.withCredentials = true;
-const foodIdeas = [
-  "chicken",
-  "dinner",
-  "sandwich",
-  "sub",
-  "pasta",
-  "fruit",
-  "beef",
-  "pork",
-  "tofu",
-  "vegetable",
-  "lunch",
-  "fish",
-  "salmon",
-  "crab",
-  "apple",
-  "tacos",
-  "sub",
-  "soup",
-  "stew",
-];
 const Home = () => {
-  const [recipes, setRecipes] = useState([]);
+  const foodIdeas = [
+    "chicken",
+    "dinner",
+    "sandwich",
+    "sub",
+    "pasta",
+    "fruit",
+    "beef",
+    "pork",
+    "tofu",
+    "vegetable",
+    "lunch",
+    "fish",
+    "salmon",
+    "crab",
+    "apple",
+    "tacos",
+    "sub",
+    "soup",
+    "stew",
+  ];
+  const [recipes, setRecipes] = useState();
   const randomRecipe = foodIdeas[Math.floor(Math.random() * foodIdeas.length)];
   const fetchRandomRecipe = async () => {
     const response = await searchRecipeAPIByName(randomRecipe);
@@ -41,7 +41,7 @@ const Home = () => {
       </div>
     );
   };
-  useEffect(fetchRandomRecipe, []);
+  useEffect(() => fetchRandomRecipe(), []);
   const { profile } = useProfile();
   return (
     <div className="wd-fade-in">

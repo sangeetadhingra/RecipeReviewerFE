@@ -20,7 +20,7 @@ const SignIn = () => {
     }
   };
   return (
-    <div>
+    <div className="wd-fade-in">
       <h1 className="text-success">Ready to begin reviewing?</h1>
       <input
         ref={emailRef}

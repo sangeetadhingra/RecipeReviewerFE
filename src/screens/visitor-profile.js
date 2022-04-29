@@ -19,7 +19,7 @@ const VisitProfile = () => {
     findAllPersonsComments();
   }, []);
   return (
-    <div>
+    <div className="wd-fade-in">
       <h1 className="text-success">Profile</h1>
       <h3 className="text-warning">
         Say hello to {profile && profile.firstName}!

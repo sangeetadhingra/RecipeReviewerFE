@@ -46,7 +46,7 @@ export const ProfileProvider = ({ children }) => {
 
   const signout = async () => {
     await Axios.post("http://localhost:4000/api/signout");
-    setProfile(null);
+    setProfile();
   };
 
   const value = { profile, signout, signin, signup, userLoggedIn };

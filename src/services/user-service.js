@@ -3,7 +3,8 @@ import { API_BASE } from "../App";
 
 export const getUserToVisit = async (userId) => {
   try {
-    await Axios.get(`${API_BASE}/profile/${userId}`);
+    const response = await Axios.get(`${API_BASE}/profile/${userId}`);
+    return response.data;
   } catch (e) {
     alert("User not found.");
   }
