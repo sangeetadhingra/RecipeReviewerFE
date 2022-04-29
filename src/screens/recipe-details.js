@@ -35,7 +35,6 @@ const RecipeDetails = () => {
 
   const findRecipeComments = async () => {
     const allComments = await findCommentsByRecipeID(recipeID);
-    console.log(allComments);
     setComments(allComments);
   };
 
@@ -76,73 +75,100 @@ const RecipeDetails = () => {
   };
 
   return (
-    <div>
-      <h1>{recipeDetails.label}</h1>
-      <p>
-        <img
-          className="img-responsive me-2 float-start"
-          src={recipeDetails.image}
-          height={180}
-          alt="Recipe"
-        />
-      </p>
-      <ul>
-        <li> Meal Type: {recipeDetails.mealType}</li>
-        <li> Dish Type: {recipeDetails.dishType}</li>
-        <li> Calories: {recipeDetails.calories}</li>
-        <li>
-          Likes:
-          {ourRecipeDetails
-            ? ourRecipeDetails.likes
-              ? ourRecipeDetails.likes
-              : 0
-            : 0}
-        </li>
-        <li>
-          Dislikes:
-          {ourRecipeDetails
-            ? ourRecipeDetails.dislikes
-              ? ourRecipeDetails.dislikes
-              : 0
-            : 0}
-        </li>
-      </ul>
-      <br />
-      <SecureContent>
-        <div>
-          <button
-            className="btn btn-primary btn-success mt-4 positive-relative rounded-pill"
-            onClick={handleLikes}
-          >
-            Like
-          </button>
-          <button
-            className="btn btn-primary btn-danger mt-4 position-relative rounded-pill"
-            onClick={handleDislikes}
-          >
-            Dislike
-          </button>
+    <div className="wd-fade-in">
+      <div className="card mb-3">
+        <div className="row g-0">
+          <div className="col-md-3">
+            <img
+              src={recipeDetails.image}
+              className="img-fluid rounded-start"
+              alt="..."
+            />
+          </div>
+          <div className="col-md-8">
+            <div className="card-body">
+              <h1 className="card-title text-success">{recipeDetails.label}</h1>
+              <ul className="list-group mb-2">
+                <li className="list-group-item">
+                  {" "}
+                  Meal Type: {recipeDetails.mealType}
+                </li>
+                <li className="list-group-item">
+                  {" "}
+                  Dish Type: {recipeDetails.dishType}
+                </li>
+                <li className="list-group-item">
+                  {" "}
+                  Calories: {Math.floor(recipeDetails.calories)}
+                </li>
+                <li className="list-group-item">
+                  {" "}
+                  Cuisine Type: {recipeDetails.cuisineType}
+                </li>
+              </ul>
+
+              <SecureContent>
+                <img
+                  className="me-2"
+                  src="https://img.icons8.com/material-outlined/96/000000/thumb-up.png"
+                  width="40"
+                  alt=""
+                  onClick={handleLikes}
+                />
+                <span className="text-success">
+                  {ourRecipeDetails
+                    ? ourRecipeDetails.likes
+                      ? ourRecipeDetails.likes
+                      : 0
+                    : 0}
+                </span>
+                <img
+                  className="me-2 ms-5"
+                  src="https://img.icons8.com/material-outlined/96/000000/thumbs-down.png"
+                  width="40"
+                  alt=""
+                  onClick={handleDislikes}
+                />
+                <span className="text-danger">
+                  {ourRecipeDetails
+                    ? ourRecipeDetails.dislikes
+                      ? ourRecipeDetails.dislikes
+                      : 0
+                    : 0}
+                </span>
+              </SecureContent>
+            </div>
+          </div>
         </div>
-      </SecureContent>
-      <br />
-      <br />
-      <h3 className="mt-3">
+      </div>
+      <h3 className="mt-3 text-warning">
         Ingredients (for serving size: {recipeDetails.yield} )
       </h3>
       <div className="card " style={{ width: "18rem;" }}>
         <ul className="list-group">
           {recipeDetails.ingredients &&
             recipeDetails.ingredients.map((recipe) => (
-              <li className="list-group-item">{recipe.text}</li>
+              <li className="list-group-item">
+                <input
+                  className="form-check-input me-2"
+                  type="checkbox"
+                  value=""
+                  aria-label="..."
+                />
+                {recipe.text}
+              </li>
             ))}
         </ul>
       </div>
       {
         <SecureContent>
           <div>
-            <h3 className="mt-5">Leave a comment:</h3>
+            <h3 className="mt-5 text-success">Leave a comment:</h3>
             <textarea ref={commentRef} className="form-control w-50" />
-            <button onClick={handleComment} className="btn btn-primary mt-1">
+            <button
+              onClick={handleComment}
+              className="btn btn-outline-warning mt-1"
+            >
               Post
             </button>
           </div>

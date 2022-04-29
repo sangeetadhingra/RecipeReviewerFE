@@ -17,7 +17,6 @@ export const getRecipeAPIByID = async (recipeID) => {
 
 export const getRecipeLikesAPIByID = async (recipeID) => {
   const response = await Axios.get(`${API_BASE}/recipeAPI/${recipeID}`);
-  console.log(response.data);
   return response.data;
 };
 
@@ -33,6 +32,5 @@ const updateRecipeRating = async (recipeID, recipe, rating) => {
     `${API_BASE}/recipes/${rating}/${recipeID}`,
     recipe
   );
-  console.log(response.data);
   return response.data;
 };

@@ -12,8 +12,6 @@ const Profile = () => {
   const { profile, signout } = useProfile();
   const findAllPersonsComments = async () => {
     const allComments = await findCommentsByUserID(profile._id);
-
-    console.log(allComments);
     setComments(allComments);
   };
   const logoutBTN = async () => {
@@ -24,9 +22,9 @@ const Profile = () => {
   };
   useEffect(() => {
     findAllPersonsComments();
-  }, []);
+  }, [comments]);
   return (
-    <div>
+    <div className="wd-fade-in">
       <h1 className="text-success">Profile</h1>
       <h3 className="text-warning"> Welcome {profile && profile.firstName}!</h3>
       <hr />

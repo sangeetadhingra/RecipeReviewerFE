@@ -5,11 +5,18 @@ import RecipesViewer from "../utils/recipes-viewer";
 import SearchBar from "../utils/searchbar";
 
 const SearchRecipes = () => {
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState();
   const { searchString } = useParams();
   const searchRecipeByName = async () => {
     const recipe = await searchRecipeAPIByName(searchString);
     setRecipes(recipe.hits);
+  };
+  const renderResults = () => {
+    return (
+      <div className="wd-fade-in">
+        <RecipesViewer recipes={recipes} />
+      </div>
+    );
   };
   useEffect(() => {
     if (searchString) {
@@ -17,12 +24,16 @@ const SearchRecipes = () => {
     }
   }, [searchString]);
   return (
-    <div>
+    <div className="wd-fade-in">
       <h1 className="text-success">
-        {searchString ? "Here's what we found!" : "Looking for something?"}
+        {searchString ? (
+          <span className="wd-fade-in">Here's what we found!</span>
+        ) : (
+          "Looking for something?"
+        )}
       </h1>
       <SearchBar />
-      <RecipesViewer recipes={recipes} />
+      {recipes && renderResults()}
     </div>
   );
 };

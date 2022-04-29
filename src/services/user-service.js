@@ -2,17 +2,15 @@ import Axios from "axios";
 import { API_BASE } from "../App";
 
 export const getUserToVisit = async (userId) => {
-  const userResponse = await Axios.get(`${API_BASE}/profile/${userId}`);
-  if (userResponse !== 503) {
-    return userResponse.data;
-  } else {
+  try {
+    await Axios.get(`${API_BASE}/profile/${userId}`);
+  } catch (e) {
     alert("User not found.");
   }
 };
 
 export const postComment = async (recipeID, userID, comments) => {
   const url = `${API_BASE}/recipeDetails/${recipeID}/comments/${userID}`;
-  console.log(url);
   const response = await Axios.post(url, comments);
   return response.data;
 };
@@ -22,7 +20,15 @@ export const findCommentsByRecipeID = async (recipeID) => {
   return response.data;
 };
 
-export const findCommentsByUserID = async (UserID) => {
-  const response = await Axios.get(`${API_BASE}/comments/users/${UserID}`);
+export const findCommentsByUserID = async (userID) => {
+  const response = await Axios.get(`${API_BASE}/comments/users/${userID}`);
   return response.data;
+};
+
+export const deleteCommentByID = async (userID, commentID) => {
+  try {
+    await Axios.delete(`${API_BASE}/comments/${commentID}/${userID}`);
+  } catch (e) {
+    alert("Must be an administrator or original poster to delete.");
+  }
 };

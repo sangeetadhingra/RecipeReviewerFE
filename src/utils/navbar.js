@@ -13,7 +13,7 @@ const NavBar = () => {
           signout();
           navigate("/home");
         }}
-        className="btn btn-danger rounded-pill"
+        className="btn btn-outline-danger rounded-pill"
       >
         Logout
       </button>
@@ -22,7 +22,7 @@ const NavBar = () => {
   const renderSignin = () => {
     return (
       <a href="/signin">
-        <button className="btn btn-success rounded-pill">Signin</button>
+        <button className="btn btn-outline-success rounded-pill">Signin</button>
       </a>
     );
   };

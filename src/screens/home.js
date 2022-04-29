@@ -1,6 +1,5 @@
 import { React, useEffect, useState } from "react";
 import Axios from "axios";
-import SearchBar from "../utils/searchbar";
 import { useProfile } from "../context/profile-context";
 import SecureContent from "../components/secure-content";
 import { searchRecipeAPIByName } from "../services/recipe-service";
@@ -18,6 +17,15 @@ const foodIdeas = [
   "pork",
   "tofu",
   "vegetable",
+  "lunch",
+  "fish",
+  "salmon",
+  "crab",
+  "apple",
+  "tacos",
+  "sub",
+  "soup",
+  "stew",
 ];
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
@@ -26,18 +34,24 @@ const Home = () => {
     const response = await searchRecipeAPIByName(randomRecipe);
     setRecipes(response.hits);
   };
+  const renderFeed = () => {
+    return (
+      <div className="wd-fade-in">
+        <RecipesViewer recipes={recipes} />
+      </div>
+    );
+  };
   useEffect(fetchRandomRecipe, []);
   const { profile } = useProfile();
   return (
-    <div>
+    <div className="wd-fade-in">
       <h1 className="text-success">
         What are you feeling today
         <SecureContent>{profile && ` ${profile.firstName}`}</SecureContent>?
       </h1>
-      <SearchBar />
       <br />
       <h3 className="text-warning">Need some ideas?</h3>
-      <RecipesViewer recipes={recipes} />
+      {recipes && renderFeed()}
     </div>
   );
 };

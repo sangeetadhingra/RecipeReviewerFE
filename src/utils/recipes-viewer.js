@@ -6,7 +6,6 @@ const RecipesViewer = (props) => {
   const columns = 4;
   const setUpRecipeCards = () => {
     setRecipes(props.recipes);
-    console.log(recipes);
     let cards = [];
     for (let i = columns; i > 0; i--) {
       cards.push(recipes.splice(0, Math.ceil(recipes.length / i)));
