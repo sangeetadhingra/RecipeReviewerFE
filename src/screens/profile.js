@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "../context/profile-context";
-import {
-  findCommentsByRecipeID,
-  findCommentsByUserID,
-} from "../services/recipe-service";
+import { findCommentsByUserID } from "../services/user-service";
+import CommentsViewer from "../utils/comments-viewer";
 
 Axios.defaults.withCredentials = true;
 const Profile = () => {
@@ -27,28 +25,20 @@ const Profile = () => {
   useEffect(() => {
     findAllPersonsComments();
   }, []);
-  console.log(profile);
   return (
     <div>
-      <h1>Profile</h1>
-      <h3> Welcome {profile && profile.firstName}!</h3>
-
+      <h1 className="text-success">Profile</h1>
+      <h3 className="text-warning"> Welcome {profile && profile.firstName}!</h3>
       <hr />
-      <div>
-        <ul className="list-group">
-          <h5> {profile && profile.firstName}'s comments: </h5>
-          {comments &&
-            comments.map((everyComment) => (
-              <li className="list-group-item">
-                RecipeID: {everyComment && everyComment.recipeID} Comment:{" "}
-                {everyComment && everyComment.comment}
-              </li>
-            ))}
-        </ul>{" "}
-      </div>
+      <h5>Permissions: {profile && profile.role} </h5>
       <button onClick={logoutBTN} className="btn btn-danger">
         Logout
       </button>
+      <hr />
+      <div>
+        <h5> {profile && profile.firstName}'s Comments: </h5>
+        <CommentsViewer comments={comments} showRecipe={true} />
+      </div>
     </div>
   );
 };

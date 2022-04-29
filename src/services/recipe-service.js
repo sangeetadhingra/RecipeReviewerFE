@@ -1,19 +1,16 @@
 import Axios from "axios";
-
-const API_BASE = process.env.REACT_APP_API_BASE
-  ? process.env.REACT_APP_API_BASE
-  : "http://localhost:4000/api/api";
+import { API_BASE } from "../App";
 
 Axios.defaults.withCredentials = true;
 
 export const searchRecipeAPIByName = async (recipeName) => {
-  const response = await Axios.get(`${API_BASE}/${recipeName}`);
+  const response = await Axios.get(`${API_BASE}/api/${recipeName}`);
   return response.data;
 };
 
 export const getRecipeAPIByID = async (recipeID) => {
   console.log(recipeID);
-  const response = await Axios.get(`${API_BASE}/recipeID/${recipeID}`);
+  const response = await Axios.get(`${API_BASE}/api/recipeID/${recipeID}`);
 
   return response.data;
 };
@@ -36,21 +33,6 @@ const updateRecipeRating = async (recipeID, recipe, rating) => {
     `${API_BASE}/recipes/${rating}/${recipeID}`,
     recipe
   );
-  return response.data;
-};
-
-export const postComment = async (recipeID, userID, comments) => {
-  const url = API_BASE + `/recipeDetails/${recipeID}/comments/${userID}`;
-  const response = await Axios.post(url, comments);
-  return response.data;
-};
-
-export const findCommentsByRecipeID = async (recipeID) => {
-  const response = await Axios.get(API_BASE + `/comments/${recipeID}`);
-  return response.data;
-};
-
-export const findCommentsByUserID = async (UserID) => {
-  const response = await Axios.get(API_BASE + `/comments/users/${UserID}`);
+  console.log(response.data);
   return response.data;
 };

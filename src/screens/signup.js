@@ -14,7 +14,6 @@ const SignUp = () => {
   const navigate = useNavigate();
   const handleSignUp = async () => {
     try {
-      //move to user service
       await signup(
         emailRef.current.value,
         passwordRef.current.value,
@@ -25,46 +24,62 @@ const SignUp = () => {
       navigate("/signin");
     } catch (e) {
       console.log(e);
-      alert("error signing up");
+      alert("Error signing up");
     }
   };
   return (
     <div>
-      <h1>Signup</h1>
-      <input
-        ref={emailRef}
-        placeholder="email"
-        type="email"
-        className="form-control"
-      />
-      <input
-        ref={passwordRef}
-        placeholder="password"
-        type="password"
-        className="form-control"
-      />
-      <input
-        ref={firstNameRef}
-        placeholder="First Name"
-        type="String"
-        className="form-control"
-      />
-      <input
-        ref={lastNameRef}
-        placeholder="Last Name"
-        type="String"
-        className="form-control"
-      />
-      <p>Optional security key:</p>
-      <input
-        ref={keyRef}
-        placeholder="Key"
-        type="password"
-        className="form-control"
-      />
-      <button onClick={handleSignUp} className="btn btn-primary">
-        Signup
-      </button>
+      <h1 className="text-warning mb-5">Tell us a little about yourself!</h1>
+      <div className="mb-3 row">
+        <label for="staticEmail" className="col-sm-2 col-form-label">
+          Email*
+        </label>
+        <div className="col-sm-10">
+          <input ref={emailRef} type="email" className="form-control" />
+        </div>
+      </div>
+
+      <div className="mb-3 row">
+        <label for="staticEmail" className="col-sm-2 col-form-label">
+          Password*
+        </label>
+        <div className="col-sm-10">
+          <input ref={passwordRef} type="password" className="form-control" />
+        </div>
+      </div>
+
+      <div className="mb-3 row">
+        <label for="staticEmail" className="col-sm-2 col-form-label">
+          First Name*
+        </label>
+        <div className="col-sm-10">
+          <input ref={firstNameRef} type="String" className="form-control" />
+        </div>
+      </div>
+
+      <div className="mb-3 row">
+        <label for="staticEmail" className="col-sm-2 col-form-label">
+          Last Name*
+        </label>
+        <div className="col-sm-10">
+          <input ref={lastNameRef} type="String" className="form-control" />
+        </div>
+      </div>
+
+      <div className="mb-3 row">
+        <label for="staticEmail" className="col-sm-2 col-form-label">
+          Security Key
+        </label>
+        <div className="col-sm-10">
+          <input ref={keyRef} type="password" className="form-control" />
+        </div>
+      </div>
+      <div className="text-center">
+        <button onClick={handleSignUp} className="btn btn-success fs-5">
+          Sign up
+        </button>
+      </div>
+      <p className="mt-2 text-center">* required</p>
     </div>
   );
 };

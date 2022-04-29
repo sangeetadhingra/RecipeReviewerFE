@@ -9,7 +9,7 @@ export const ProfileProvider = ({ children }) => {
 
   const userLoggedIn = async () => {
     try {
-      const response = await Axios.post("http://localhost:4000/api/profile");
+      const response = await Axios.get("http://localhost:4000/api/profile");
       setProfile(response.data);
       return response.data;
     } catch (e) {
@@ -28,7 +28,7 @@ export const ProfileProvider = ({ children }) => {
       console.log(response.data);
       setProfile(response.data);
     } catch (e) {
-      throw e;
+      console.log(e);
     }
   };
 
@@ -40,12 +40,12 @@ export const ProfileProvider = ({ children }) => {
       });
       setProfile(response.data);
     } catch (e) {
-      throw e;
+      console.log(e);
     }
   };
 
   const signout = async () => {
-    const response = await Axios.post("http://localhost:4000/api/signout");
+    await Axios.post("http://localhost:4000/api/signout");
     setProfile(null);
   };
 

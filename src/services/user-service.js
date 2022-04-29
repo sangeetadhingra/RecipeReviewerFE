@@ -1,9 +1,28 @@
 import Axios from "axios";
-export const getCurrentUserService = async () => {
-  const userResponse = await Axios.get("http://localhost:4000/api/profile");
+import { API_BASE } from "../App";
+
+export const getUserToVisit = async (userId) => {
+  const userResponse = await Axios.get(`${API_BASE}/profile/${userId}`);
   if (userResponse !== 503) {
     return userResponse.data;
   } else {
-    return null;
+    alert("User not found.");
   }
+};
+
+export const postComment = async (recipeID, userID, comments) => {
+  const url = `${API_BASE}/recipeDetails/${recipeID}/comments/${userID}`;
+  console.log(url);
+  const response = await Axios.post(url, comments);
+  return response.data;
+};
+
+export const findCommentsByRecipeID = async (recipeID) => {
+  const response = await Axios.get(`${API_BASE}/comments/${recipeID}`);
+  return response.data;
+};
+
+export const findCommentsByUserID = async (UserID) => {
+  const response = await Axios.get(`${API_BASE}/comments/users/${UserID}`);
+  return response.data;
 };

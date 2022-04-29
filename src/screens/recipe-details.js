@@ -1,15 +1,16 @@
 import { useState, React, useEffect, useRef } from "react";
-import Preview from "../utils/preview";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
 import {
-  findCommentsByRecipeID,
   getRecipeAPIByID,
   getRecipeLikesAPIByID,
-  postComment,
+  updateRecipeDislikes,
+  updateRecipeLikes,
 } from "../services/recipe-service";
+import { findCommentsByRecipeID, postComment } from "../services/user-service";
 import SecureContent from "../components/secure-content";
 import { useProfile } from "../context/profile-context";
+import CommentsViewer from "../utils/comments-viewer";
 
 Axios.defaults.withCredentials = true;
 const RecipeDetails = () => {
@@ -20,9 +21,6 @@ const RecipeDetails = () => {
 
   const [ourRecipeDetails, setOurRecipeDetails] = useState({});
   const { recipeID } = useParams();
-  const API_BASE = process.env.REACT_APP_API_BASE
-    ? process.env.REACT_APP_API_BASE
-    : "http://localhost:4000/api";
 
   const getRecipeByID = async () => {
     const response = await getRecipeAPIByID(recipeID);
@@ -30,7 +28,6 @@ const RecipeDetails = () => {
   };
   const getRecipeLikesByID = async () => {
     const response = await getRecipeLikesAPIByID(recipeID);
-    console.log(response);
     if (response) {
       setOurRecipeDetails(response);
     }
@@ -47,33 +44,22 @@ const RecipeDetails = () => {
     getRecipeLikesByID();
     findRecipeComments();
   }, []);
-
-  // TODO: Move to services
+  // Handling ratings
   const handleLikes = async () => {
-    // Construct the recipe
-    // TODO: Add more?
     const recipe = {
       title: recipeDetails.label,
       rid: recipeID,
     };
-    const response = await Axios.put(
-      API_BASE + "/recipes/like/" + recipeID,
-      recipe
-    );
-    setOurRecipeDetails(response.data);
+    const response = await updateRecipeLikes(recipeID, recipe);
+    setOurRecipeDetails(response);
   };
   const handleDislikes = async () => {
-    // Construct the recipe
-    // TODO: Add more?
     const recipe = {
       title: recipeDetails.label,
       rid: recipeID,
     };
-    const response = await Axios.put(
-      API_BASE + "/recipes/dislike/" + recipeID,
-      recipe
-    );
-    setOurRecipeDetails(response.data);
+    const response = await updateRecipeDislikes(recipeID, recipe);
+    setOurRecipeDetails(response);
   };
 
   const commentRef = useRef();
@@ -82,6 +68,7 @@ const RecipeDetails = () => {
     const newComment = await postComment(recipeID, profile._id, {
       comment: commentRef.current.value,
       user: profile._id,
+      recipeName: recipeDetails.label,
       name: profile.firstName,
     });
 
@@ -103,8 +90,22 @@ const RecipeDetails = () => {
         <li> Meal Type: {recipeDetails.mealType}</li>
         <li> Dish Type: {recipeDetails.dishType}</li>
         <li> Calories: {recipeDetails.calories}</li>
-        <li> Likes: {ourRecipeDetails && ourRecipeDetails.likes}</li>
-        <li> Dislikes: {ourRecipeDetails && ourRecipeDetails.dislikes}</li>
+        <li>
+          Likes:
+          {ourRecipeDetails
+            ? ourRecipeDetails.likes
+              ? ourRecipeDetails.likes
+              : 0
+            : 0}
+        </li>
+        <li>
+          Dislikes:
+          {ourRecipeDetails
+            ? ourRecipeDetails.dislikes
+              ? ourRecipeDetails.dislikes
+              : 0
+            : 0}
+        </li>
       </ul>
       <br />
       <SecureContent>
@@ -120,7 +121,7 @@ const RecipeDetails = () => {
             onClick={handleDislikes}
           >
             Dislike
-          </button>{" "}
+          </button>
         </div>
       </SecureContent>
       <br />
@@ -138,29 +139,17 @@ const RecipeDetails = () => {
       </div>
       {
         <SecureContent>
-          {" "}
           <div>
             <h3 className="mt-5">Leave a comment:</h3>
             <textarea ref={commentRef} className="form-control w-50" />
             <button onClick={handleComment} className="btn btn-primary mt-1">
               Post
             </button>
-          </div>{" "}
+          </div>
         </SecureContent>
       }
       <br />
-      <div>
-        <ul className="list-group">
-          <h5> Reviews: </h5>
-          {comments &&
-            comments.map((everyComment) => (
-              <li className="list-group-item">
-                {everyComment && everyComment.name} :{" "}
-                {everyComment && everyComment.comment}
-              </li>
-            ))}
-        </ul>{" "}
-      </div>
+      <CommentsViewer comments={comments} />
     </div>
   );
 };
