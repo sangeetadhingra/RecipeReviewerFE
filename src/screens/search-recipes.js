@@ -32,7 +32,7 @@ const SearchRecipes = () => {
           "Looking for something?"
         )}
       </h1>
-      <SearchBar />
+      <SearchBar value={searchString} />
       {recipes && renderResults()}
     </div>
   );

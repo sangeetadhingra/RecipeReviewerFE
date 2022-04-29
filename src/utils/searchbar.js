@@ -1,7 +1,7 @@
 import { React, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SearchBar = () => {
+const SearchBar = (props) => {
   const navigate = useNavigate();
   const recipeNameRef = useRef();
   const searchBarHandler = () => {
@@ -12,7 +12,12 @@ const SearchBar = () => {
   return (
     <div>
       <div className="input-group mb-3">
-        <input type="text" className="form-control" ref={recipeNameRef} />
+        <input
+          type="text"
+          className="form-control"
+          ref={recipeNameRef}
+          value={props.value}
+        />
         <button
           className="btn btn-primary btn-success"
           type="button"
