@@ -1,11 +1,13 @@
-import { React, useRef } from "react";
+import {React, useRef, useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 const SearchBar = (props) => {
   const navigate = useNavigate();
   const recipeNameRef = useRef();
+  const [searchString, updateSearchString] = useState();
   const searchBarHandler = () => {
     if (recipeNameRef.current.value) {
+      updateSearchString(recipeNameRef.current.value)
       navigate(`/search/${recipeNameRef.current.value}`);
     }
   };
@@ -16,7 +18,8 @@ const SearchBar = (props) => {
           type="text"
           className="form-control"
           ref={recipeNameRef}
-          value={props.value}
+          value={searchString}
+          onChange={(e) => updateSearchString(e.target.value)}
         />
         <button
           className="btn btn-primary btn-success"

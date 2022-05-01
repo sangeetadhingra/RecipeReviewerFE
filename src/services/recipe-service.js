@@ -16,7 +16,8 @@ export const getRecipeAPIByID = async (recipeID) => {
 };
 
 export const getRecipeLikesAPIByID = async (recipeID) => {
-  const response = await Axios.get(`${API_BASE}/recipeAPI/${recipeID}`);
+  console.log(recipeID);
+  const response = await Axios.get(`http://localhost:4000/api/recipes/likes/${recipeID}`);
   return response.data;
 };
 

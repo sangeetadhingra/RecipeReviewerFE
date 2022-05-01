@@ -33,6 +33,7 @@ const Home = () => {
   const fetchRandomRecipe = async () => {
     const response = await searchRecipeAPIByName(randomRecipe);
     setRecipes(response.hits);
+    return response;
   };
   const renderFeed = () => {
     return (
@@ -41,7 +42,10 @@ const Home = () => {
       </div>
     );
   };
-  useEffect(() => fetchRandomRecipe(), []);
+  useEffect(() => {
+    fetchRandomRecipe();
+    renderFeed() },
+    []);
   const { profile } = useProfile();
   return (
     <div className="wd-fade-in">
@@ -50,7 +54,7 @@ const Home = () => {
         <SecureContent>{profile && ` ${profile.firstName}`}</SecureContent>?
       </h1>
       <br />
-      <h3 className="text-warning">Need some ideas?</h3>
+      <h3 className="text-warning">Need some ideas? </h3>
       {recipes && renderFeed()}
     </div>
   );

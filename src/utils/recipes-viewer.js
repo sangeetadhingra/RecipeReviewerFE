@@ -19,34 +19,36 @@ const RecipesViewer = (props) => {
         recipeCards.map((row) => {
           return (
             <div className="card-group">
-              {row &&
+
+          {row &&
                 row.map((recipe) => (
-                  <div className="card m-3 border-none">
-                    <img
+                  <div className="card m-3  border-none">
+                    <a href={`/details/${recipe.recipe.uri.substring(44)}`}><img
                       className="card-img-top"
                       src={recipe.recipe.image}
                       alt="Food"
-                    />
+                    /></a>
                     <div className="card-body d-flex flex-column">
-                      <h5 className="card-title text-success">
+                     <div className="d-none d-md-block"> <a href={`/details/${recipe.recipe.uri.substring(44)}`}><h5 className="card-title text-success">
                         {recipe.recipe.label}
-                      </h5>
+                      </h5> </a></div>
                       <p className="card-text">
-                        {recipe.recipe.cuisineType[0]
+                        <div className="d-none d-md-block">{recipe.recipe.cuisineType[0]
                           .split(" ")
                           .map(
                             (s) => s.charAt(0).toUpperCase() + s.substring(1)
                           )
-                          .join(" ") + " "}
-                        {recipe.recipe.mealType[0]} {recipe.recipe.dishType[0]}
+                          .join(" ") + " "} </div>
+                        <div className="d-none d-lg-block">
+                        {recipe.recipe.mealType[0]} {recipe.recipe.dishType[0]} </div>
                       </p>
-                      <a
+                      <div className="d-none d-lg-block"><a
                         href={`/details/${recipe.recipe.uri.substring(44)}`}
                         className="btn btn-warning align-self-end mt-auto w-100"
                         alt=""
                       >
                         Try it yourself!
-                      </a>
+                      </a> </div>
                     </div>
                   </div>
                 ))}

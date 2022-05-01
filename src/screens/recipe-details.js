@@ -16,7 +16,7 @@ Axios.defaults.withCredentials = true;
 const RecipeDetails = () => {
   const [recipeDetails, setRecipeDetails] = useState([]);
   const [comments, setComments] = useState([]);
-
+  const [userLiked, setUserLiked] = useState(false);
   const { profile } = useProfile();
 
   const [ourRecipeDetails, setOurRecipeDetails] = useState({});
@@ -27,7 +27,10 @@ const RecipeDetails = () => {
     setRecipeDetails(response.recipe);
   };
   const getRecipeLikesByID = async () => {
-    const response = await getRecipeLikesAPIByID(recipeID);
+    let response;
+    if (recipeID) {
+      response = await getRecipeLikesAPIByID(recipeID); }
+    console.log(response);
     if (response) {
       setOurRecipeDetails(response);
     }
@@ -49,17 +52,25 @@ const RecipeDetails = () => {
       title: recipeDetails.label,
       rid: recipeID,
     };
-    const response = await updateRecipeLikes(recipeID, recipe);
-    setOurRecipeDetails(response);
+    if (!userLiked) {
+      const response = await updateRecipeLikes(recipeID, recipe);
+      setOurRecipeDetails(response);
+      setUserLiked(true);
+    }
+
   };
   const handleDislikes = async () => {
     const recipe = {
       title: recipeDetails.label,
       rid: recipeID,
     };
-    const response = await updateRecipeDislikes(recipeID, recipe);
-    setOurRecipeDetails(response);
+    if (!userLiked) {
+      const response = await updateRecipeDislikes(recipeID, recipe);
+      setOurRecipeDetails(response);
+      setUserLiked(true);
+    }
   };
+
 
   const commentRef = useRef();
 
@@ -70,8 +81,8 @@ const RecipeDetails = () => {
       recipeName: recipeDetails.label,
       name: profile.firstName,
     });
-
-    setComments([...comments, newComment]);
+    document.getElementById('comments').value = "";
+    setComments([newComment,...comments]);
   };
 
   return (
@@ -164,7 +175,7 @@ const RecipeDetails = () => {
         <SecureContent>
           <div>
             <h3 className="mt-5 text-success">Leave a comment:</h3>
-            <textarea ref={commentRef} className="form-control w-50" />
+            <textarea id="comments" ref={commentRef} className="form-control w-50" />
             <button
               onClick={handleComment}
               className="btn btn-outline-warning mt-1"
